@@ -1,0 +1,54 @@
+
+name: 'imdb_analytics'
+version: '1.0.0'
+config-version: 2
+
+# Este perfil debe coincidir con el definido en ~/.dbt/profiles.yml
+profile: 'dbt_project'
+
+# Configuración de hooks para generar secuencias (ya no se usa)
+# on-run-start:
+#   - "{{ generate_sequences() }}"
+
+# Rutas de los diferentes tipos de archivos
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+# Directorios a limpiar con dbt clean
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Configuración de modelos por carpeta
+models:
+  imdb_analytics:
+    # Capa de staging (raw data)
+    staging:
+      +materialized: view
+      +schema: staging
+      +tags: ['staging']
+    
+    # Capa intermedia (transformaciones)
+    intermediate:
+      +materialized: table
+      +schema: intermediate
+      +tags: ['intermediate']
+    
+    # Capa marts (dimensiones y hechos)
+    marts:
+      +materialized: table
+      +schema: marts
+      +tags: ['marts']
+      dimensions:
+        +schema: marts
+      facts:
+        +schema: marts
+    
+    views:
+      +materialized: view
+      +schema: views
+      +tags: ['views']

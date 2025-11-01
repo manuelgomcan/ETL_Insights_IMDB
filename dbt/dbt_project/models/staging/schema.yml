@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: tmdb_movies_raw
+    description: "Modelo base que expone los datos crudos de películas con validaciones básicas"
+    columns:
+      - name: id
+        description: "Identificador único de la película"
+        tests:
+          - unique
+          - not_null
+      
+      - name: title
+        description: "Título de la película"
+        tests:
+          - not_null
+      
+      - name: movie_status
+        description: "Estado de la película (ej: Released, In Production)"
+      
+      - name: release_date
+        description: "Fecha de lanzamiento de la película"
+        tests:
+          - not_null
+      
+      - name: revenue
+        description: "Ingresos totales de la película"
+        tests:
+          - dbt_utils.not_negative
+      
+      - name: budget
+        description: "Presupuesto de la película"
+        tests:
+          - dbt_utils.not_negative
+      
+      - name: vote_average
+        description: "Puntuación media de los votos"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 10
+      
+      - name: vote_count
+        description: "Número total de votos"
+        tests:
+          - dbt_utils.not_negative

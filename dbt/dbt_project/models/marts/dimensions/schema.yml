@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: dim_movies
+    description: "Dimensión principal de películas con atributos descriptivos"
+    config:
+      tags: ['core', 'dimension']
+    columns:
+      - name: movie_id
+        description: "Clave primaria de la película"
+        tests:
+          - unique
+          - not_null
+      
+      - name: title
+        description: "Título de la película"
+        tests:
+          - not_null
+      
+      - name: movie_status
+        description: "Estado actual de la película"
+        tests:
+          - accepted_values:
+              values: ['Released', 'Post Production', 'In Production']
+      
+      - name: release_date
+        description: "Fecha de lanzamiento"
+        tests:
+          - not_null
+          - dbt_utils.date_in_valid_range:
+              min_date: '1900-01-01'
+              max_date: '{{ var("max_date", "2030-12-31") }}'
+      
+      - name: runtime
+        description: "Duración en minutos"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1000 
+      
+      - name: original_language
+        description: "Código ISO del idioma original"
+        tests:
+          - not_null
+          - length:
+              max: 2
+              min: 2

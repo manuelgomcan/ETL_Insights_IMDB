@@ -1,0 +1,110 @@
+version: 2
+
+models:
+  - name: fact_movie_cast
+    description: >
+      Tabla puente que relaciona películas con actores.
+      Permite análisis de participación de actores en películas y trayectorias profesionales.
+    config:
+      tags: ['core', 'fact']
+    columns:
+      - name: movie_cast_sk
+        description: "Surrogate key única para cada relación película-actor"
+        tests:
+          - unique
+          - not_null
+      
+      - name: movie_id
+        description: "ID de la película, referencia a dim_movies"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_movies')
+              field: movie_id
+      
+      - name: actor_id
+        description: "ID del actor, referencia a dim_actors"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_actors')
+              field: actor_sk
+
+  - name: fact_movie_genres
+    description: >
+      Tabla puente que relaciona películas con géneros.
+      Permite análisis de géneros y clasificación de películas.
+    config:
+      tags: ['core', 'fact']
+    columns:
+      - name: movie_genre_sk
+        description: "Surrogate key única para cada relación película-género"
+        tests:
+          - unique
+          - not_null
+      
+      - name: movie_id
+        description: "ID de la película, referencia a dim_movies"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_movies')
+              field: movie_id
+      
+      - name: genre_id
+        description: "ID del género, referencia a dim_genres"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_genres')
+              field: genre_id
+
+  - name: fact_movie_performance
+    description: >
+      Fact table con métricas de rendimiento de películas.
+      Incluye métricas financieras y de popularidad.
+    config:
+      tags: ['core', 'fact']
+    columns:
+      - name: movie_id
+        description: "ID de la película, referencia a dim_movies"
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('dim_movies')
+              field: movie_id
+      
+      - name: revenue
+        description: "Ingresos totales en USD"
+        tests:
+          - not_null
+          - dbt_utils.not_negative
+      
+      - name: budget
+        description: "Presupuesto en USD"
+        tests:
+          - not_null
+          - dbt_utils.not_negative
+      
+      - name: profit
+        description: "Beneficio (revenue - budget)"
+        tests:
+          - not_null
+      
+      - name: roi
+        description: "Return on Investment ((revenue - budget) / budget)"
+      
+      - name: vote_average
+        description: "Puntuación media (0-10)"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 10
+      
+      - name: vote_count
+        description: "Número total de votos"
+        tests:
+          - not_null
+          - dbt_utils.not_negative

@@ -1,0 +1,73 @@
+version: 2
+
+sources:
+  - name: tmdb
+    schema: staging
+    description: "Fuente de datos crudos importados de TMDB"
+    tables:
+      - name: imdb_raw
+        description: "Tabla con datos sin procesar de películas TMDB"
+        columns:
+          - name: id
+            description: "Identificador único de la película"
+            tests:
+              - unique
+              - not_null
+          - name: title
+            description: "Título de la película"
+            tests:
+              - not_null
+          - name: vote_average
+            description: "Puntuación media de votos"
+          - name: vote_count
+            description: "Número de votos"
+          - name: status
+            description: "Estado de la película (ejemplo: Released)"
+          - name: release_date
+            description: "Fecha de lanzamiento"
+            tests:
+              - not_null
+          - name: revenue
+            description: "Ingresos generados"
+          - name: runtime
+            description: "Duración en minutos"
+          - name: budget
+            description: "Presupuesto asignado"
+          - name: imdb_id
+            description: "Identificador IMDB"
+          - name: original_language
+            description: "Idioma original"
+          - name: original_title
+            description: "Título original"
+          - name: overview
+            description: "Resumen de la película"
+          - name: popularity
+            description: "Índice de popularidad"
+          - name: tagline
+            description: "Frase promocional"
+          - name: genres
+            description: "Géneros asociados, posiblemente separados por comas"
+          - name: production_companies
+            description: "Compañías productoras"
+          - name: production_countries
+            description: "Países de producción"
+          - name: spoken_languages
+            description: "Idiomas hablados en la película"
+          - name: cast
+            description: "Reparto principal"
+          - name: director
+            description: "Director de la película"
+          - name: director_of_photography
+            description: "Director de fotografía"
+          - name: writers
+            description: "Guionistas"
+          - name: producers
+            description: "Productores"
+          - name: music_composer
+            description: "Compositor de la música"
+          - name: imdb_rating
+            description: "Valoración en IMDB"
+          - name: imdb_votes
+            description: "Número de votos en IMDB"
+          - name: poster_path
+            description: "Ruta al póster"

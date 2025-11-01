@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: stg_movies
+    description: "Modelo con datos de películas limpios y tipados correctamente"
+    config:
+      tags: ['movies', 'core']
+    columns:
+      - name: id
+        description: "Identificador único de la película"
+        tests:
+          - unique
+          - not_null
+      
+      - name: title
+        description: "Título de la película (limpio)"
+        tests:
+          - not_null
+      
+      - name: vote_average
+        description: "Puntuación media de los votos (convertido a numeric)"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 10
+      
+      - name: movie_status
+        description: "Estado de la película"
+      
+      - name: release_date
+        description: "Fecha de lanzamiento (convertido a date)"
+        tests:
+          - not_null
+          - dbt_utils.date_in_valid_range:
+              min_date: '1900-01-01'
+              max_date: '{{ var("max_date", "2030-12-31") }}'
+      
+      - name: revenue
+        description: "Ingresos totales (convertido a numeric)"
+        tests:
+          - dbt_utils.not_negative
+      
+      - name: budget
+        description: "Presupuesto (convertido a numeric)"
+        tests:
+          - dbt_utils.not_negative
+      
+      - name: original_language
+        description: "Código de idioma original (en minúsculas)"
