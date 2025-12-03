@@ -6,6 +6,7 @@ Proyecto de ingeniería de datos (ETL) para centralizar y transformar datos de I
 - Orquesta todo con Apache Airflow.
 
 Objetivo: entregar un pipeline reproducible, versionado y observable para preparar un modelo de datos listo para análisis y visualización.
+Se desarrolló un informe en Power BI con insights de negocio.
 
 ## Arquitectura (resumen)
 1. Extracción y carga (EL)
